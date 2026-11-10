@@ -1,0 +1,45 @@
+# Machine-readable copy of the YAML block in PREREG_KILL_TEST.md Section 4 (must stay identical, test T14).
+prereg_version: 1
+models: [olmoe_1b_7b, qwen3_30b_a3b]
+splits:
+  calibration_tokens: 1000000
+  validation_tokens: 20000
+  analysis_tokens: {olmoe_1b_7b: 50000, qwen3_30b_a3b: 30000}
+  seq_len: 1024
+  seed: 0
+k1:
+  statistic: share_of_moe_layers_with_median_m95_at_most
+  m95_level: 0.95
+  go: {median_m95_at_most: 3, layer_share_at_least: 0.60}
+  nogo: {median_m95_at_least: 5, layer_share_at_least: 0.60}
+k2:
+  budgets: [1, 2]
+  metric: relative_error_energy
+  reference: better_of_B1_B2_per_layer
+  candidates: [ours_avg, ours_cos, ours_clu16]
+  choose_on: validation_mean_over_layers_at_m2
+  aggregate: median_over_moe_layers_of_reference_over_ours_ratio
+  go_ratio_at_least: 2.0
+  amber_ratio_at_least: 1.3
+  rule: "GO if ratio >= 2.0 at both budgets; AMBER if >= 1.3 at both but not GO; NO-GO otherwise"
+  rescue:
+    variant: ours_sk
+    sketch_fraction: 0.05
+    allowed_only_if_primary_not_go: true
+    extra_condition: "rescue error <= reference error at m + 1"
+k3:
+  task: gsm8k_fixed250
+  olmoe_task_switch: {to: arc_challenge, if_native_accuracy_below: 0.25}
+  m_star_candidates: [1, 2, 3]
+  m_star_min_b2_loss_points: 5.0
+  primary: recovery_of_ours_fixed_over_B2
+  go: {recovery_at_least: 0.50, gain_ci_excludes_zero: true, ours_minus_b3_ci_lower_at_least_points: -1.0}
+  amber: {recovery_at_least: 0.25, gain_ci_excludes_zero: true}
+  nogo: "recovery below 0.25 or gain interval includes zero"
+  note_b3: "the B3 condition applies only if B3 is implementable; if GO holds except the B3 condition, the cell is AMBER"
+  bootstrap: {resamples: 10000, level: 0.95, seed: 0, paired: true}
+  amber_extension: {allowed_once: true, extra_questions: 250, subset: gsm8k_fixed500}
+decision:
+  go: "K1 GO on both models; K2 GO on at least one and not NO-GO on the other; K3 GO on at least one and not NO-GO on the other"
+  nogo: "K1 NO-GO on both, or K2 NO-GO on both after rescue, or K3 NO-GO on both"
+  amber: "anything else"
