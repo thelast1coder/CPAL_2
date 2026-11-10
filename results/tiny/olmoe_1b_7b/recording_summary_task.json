@@ -1,0 +1,30 @@
+{
+  "info": {
+    "validation": {
+      "tokens": 1147,
+      "bytes": 1398948
+    }
+  },
+  "run": {
+    "config": {
+      "batch_size": 4,
+      "target": "task"
+    },
+    "seed": 0,
+    "git_hash": "1d7c06c62b7336aeed70ac4285b70908c6151b7a",
+    "git_dirty": false,
+    "versions": {
+      "python": "3.12.1",
+      "torch": "2.15.0+cpu",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "transformers": "5.22.2",
+      "numpy": "2.5.4",
+      "safetensors": "0.8.0",
+      "huggingface_hub": "2.4.0"
+    },
+    "gpu": "cpu",
+    "start": "2026-11-10T22:45:41",
+    "end": "2026-11-10T22:46:13",
+    "wall_time_s": 32.625
+  }
+}

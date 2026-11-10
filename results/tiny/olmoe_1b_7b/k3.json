@@ -1,0 +1,188 @@
+{
+  "task": "tiny_agreement",
+  "m_star": 1,
+  "primary": "ours-cos",
+  "accuracy": {
+    "B0": 1.0,
+    "B2_m1": 0.236,
+    "B2_m2": 0.536,
+    "B2_m3": 0.752,
+    "B2+P": 0.444,
+    "B3": 0.428,
+    "B3+P": 0.444,
+    "ours-fixed": 0.44,
+    "ours-adaptive": 0.568
+  },
+  "mean_active": {
+    "B0": 4.0,
+    "B2_m1": 1.0,
+    "B2_m2": 2.0,
+    "B2_m3": 3.0,
+    "B2+P": 1.0,
+    "B3": 1.0,
+    "B3+P": 1.0,
+    "ours-fixed": 1.0,
+    "ours-adaptive": 1.5194583333333334
+  },
+  "n": 250,
+  "recovery": {
+    "recovery": 0.2670157068062827,
+    "lo": 0.18460893854748608,
+    "hi": 0.34594594594594597,
+    "n": 250,
+    "dropped_resamples": 0,
+    "seed": 0
+  },
+  "gain_vs_B2": {
+    "diff": 0.204,
+    "lo": 0.136,
+    "hi": 0.272,
+    "n": 250,
+    "resamples": 10000,
+    "level": 0.95,
+    "seed": 0
+  },
+  "ours_minus_B3": {
+    "diff": 0.012,
+    "lo": -0.032,
+    "hi": 0.056,
+    "n": 250,
+    "resamples": 10000,
+    "level": 0.95,
+    "seed": 0
+  },
+  "b3_implementable": true,
+  "secondary": {
+    "B2+P": {
+      "recovery": 0.27225130890052357,
+      "lo": 0.19094280928451793,
+      "hi": 0.3510677218474312,
+      "n": 250,
+      "dropped_resamples": 0,
+      "seed": 0
+    },
+    "B3+P": {
+      "recovery": 0.27225130890052357,
+      "lo": 0.19094280928451793,
+      "hi": 0.3510677218474312,
+      "n": 250,
+      "dropped_resamples": 0,
+      "seed": 0
+    },
+    "ours-adaptive_vs_B2_m2": {
+      "diff": 0.032,
+      "lo": -0.04,
+      "hi": 0.104,
+      "n": 250,
+      "resamples": 10000,
+      "level": 0.95,
+      "seed": 0
+    }
+  },
+  "ppl": {
+    "B0": {
+      "ppl": 244.61331516902766,
+      "nll": 10823.367599487305,
+      "tokens": 1968
+    },
+    "B2_m1": {
+      "ppl": 273.24829464939893,
+      "nll": 11041.229583740234,
+      "tokens": 1968
+    },
+    "ours-fixed_m1": {
+      "ppl": 180.53825608658815,
+      "nll": 10225.615234375,
+      "tokens": 1968
+    },
+    "B2_m2": {
+      "ppl": 256.10490462867585,
+      "nll": 10913.71549987793,
+      "tokens": 1968
+    },
+    "ours-fixed_m2": {
+      "ppl": 202.99938924586712,
+      "nll": 10456.383445739746,
+      "tokens": 1968
+    },
+    "B2_m3": {
+      "ppl": 244.96310406569373,
+      "nll": 10826.179763793945,
+      "tokens": 1968
+    },
+    "ours-fixed_m3": {
+      "ppl": 236.76180369574328,
+      "nll": 10759.163429260254,
+      "tokens": 1968
+    }
+  },
+  "run": {
+    "config": {
+      "downstream": {
+        "task": "gsm8k_fixed250",
+        "m_candidates": [
+          1,
+          2,
+          3
+        ],
+        "max_new_tokens": 512,
+        "batch_size": 32,
+        "ppl_tokens": 2000,
+        "b3_k2": null
+      },
+      "primary": "ours-cos",
+      "prereg_k3": {
+        "task": "gsm8k_fixed250",
+        "olmoe_task_switch": {
+          "to": "arc_challenge",
+          "if_native_accuracy_below": 0.25
+        },
+        "m_star_candidates": [
+          1,
+          2,
+          3
+        ],
+        "m_star_min_b2_loss_points": 5.0,
+        "primary": "recovery_of_ours_fixed_over_B2",
+        "go": {
+          "recovery_at_least": 0.5,
+          "gain_ci_excludes_zero": true,
+          "ours_minus_b3_ci_lower_at_least_points": -1.0
+        },
+        "amber": {
+          "recovery_at_least": 0.25,
+          "gain_ci_excludes_zero": true
+        },
+        "nogo": "recovery below 0.25 or gain interval includes zero",
+        "note_b3": "the B3 condition applies only if B3 is implementable; if GO holds except the B3 condition, the cell is AMBER",
+        "bootstrap": {
+          "resamples": 10000,
+          "level": 0.95,
+          "seed": 0,
+          "paired": true
+        },
+        "amber_extension": {
+          "allowed_once": true,
+          "extra_questions": 250,
+          "subset": "gsm8k_fixed500"
+        }
+      }
+    },
+    "seed": 0,
+    "git_hash": "1d7c06c62b7336aeed70ac4285b70908c6151b7a",
+    "git_dirty": false,
+    "versions": {
+      "python": "3.12.1",
+      "torch": "2.15.0+cpu",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "transformers": "5.22.2",
+      "numpy": "2.5.4",
+      "safetensors": "0.8.0",
+      "huggingface_hub": "2.4.0"
+    },
+    "gpu": "cpu",
+    "start": "2026-11-10T22:47:38",
+    "end": "2026-11-10T22:48:07",
+    "wall_time_s": 28.585
+  }
+}

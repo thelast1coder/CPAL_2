@@ -1,0 +1,47 @@
+{
+  "primary": "ours-cos",
+  "taus": {
+    "1.5": {
+      "tau": 0.3852837709710002,
+      "validation_mean": 1.5,
+      "analysis_mean": 1.4941580756013746
+    },
+    "2.0": {
+      "tau": 0.21109787840396166,
+      "validation_mean": 2.0,
+      "analysis_mean": 2.015463917525773
+    },
+    "3.0": {
+      "tau": 0.05561244301497936,
+      "validation_mean": 3.0,
+      "analysis_mean": 3.100687285223368
+    }
+  },
+  "run": {
+    "config": {
+      "primary": "ours-cos",
+      "targets": [
+        1.5,
+        2.0,
+        3.0
+      ],
+      "target_model": "task"
+    },
+    "seed": 0,
+    "git_hash": "1d7c06c62b7336aeed70ac4285b70908c6151b7a",
+    "git_dirty": false,
+    "versions": {
+      "python": "3.12.1",
+      "torch": "2.15.0+cpu",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "transformers": "5.22.2",
+      "numpy": "2.5.4",
+      "safetensors": "0.8.0",
+      "huggingface_hub": "2.4.0"
+    },
+    "gpu": "cpu",
+    "start": "2026-11-10T22:50:25",
+    "end": "2026-11-10T22:50:32",
+    "wall_time_s": 6.515
+  }
+}

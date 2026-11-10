@@ -1,0 +1,45 @@
+{
+  "tokens": 4467,
+  "wall_time_s": 1.77677321434021,
+  "layers": {
+    "0": {
+      "tokens": 4467,
+      "backoff_share": 0.0,
+      "r_bar": 0.004051742516173587
+    },
+    "1": {
+      "tokens": 4467,
+      "backoff_share": 0.0,
+      "r_bar": 0.0013937052359891968
+    }
+  },
+  "run": {
+    "config": {
+      "pass1_tokens": 2000,
+      "clusters": [
+        8,
+        16
+      ],
+      "sketch_fraction": 0.05,
+      "n_min": 4,
+      "full_gram_tokens": 0,
+      "batch_size": 16
+    },
+    "seed": 0,
+    "git_hash": "1d7c06c62b7336aeed70ac4285b70908c6151b7a",
+    "git_dirty": false,
+    "versions": {
+      "python": "3.12.1",
+      "torch": "2.15.0+cpu",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "transformers": "5.22.2",
+      "numpy": "2.5.4",
+      "safetensors": "0.8.0",
+      "huggingface_hub": "2.4.0"
+    },
+    "gpu": "cpu",
+    "start": "2026-11-10T22:48:44",
+    "end": "2026-11-10T22:48:56",
+    "wall_time_s": 12.215
+  }
+}

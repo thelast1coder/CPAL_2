@@ -1,0 +1,70 @@
+{
+  "checks": {
+    "K0.1": {
+      "max_abs_logit_diff": 0.0,
+      "tol": 0.0001,
+      "pass": true
+    },
+    "K0.3": {
+      "max_rel_diff": 9.624278212042707e-08,
+      "tol": 0.001,
+      "pass": true
+    },
+    "K0.4": {
+      "layer": 1,
+      "online": 0.3859396147716711,
+      "offline": 0.3859396204787924,
+      "rel_gap": 1.4787601627635565e-08,
+      "pass": true
+    },
+    "K0.5": {
+      "layer": 1,
+      "rel_error": 0.0,
+      "tol": 0.0001,
+      "pass": true
+    },
+    "K0.2": {
+      "identical": 20,
+      "of": 20,
+      "pass": true
+    },
+    "K0.3_task": {
+      "max_rel_diff": 9.624278212042707e-08,
+      "tol": 0.001,
+      "pass": true
+    },
+    "K0.4_task": {
+      "layer": 1,
+      "online": 0.3859396147716711,
+      "offline": 0.3859396204787924,
+      "rel_gap": 1.4787601627635565e-08,
+      "pass": true
+    },
+    "K0.5_task": {
+      "layer": 1,
+      "rel_error": 0.0,
+      "tol": 0.0001,
+      "pass": true
+    }
+  },
+  "all_pass": true,
+  "run": {
+    "config": {},
+    "seed": 0,
+    "git_hash": "1d7c06c62b7336aeed70ac4285b70908c6151b7a",
+    "git_dirty": false,
+    "versions": {
+      "python": "3.12.1",
+      "torch": "2.15.0+cpu",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "transformers": "5.22.2",
+      "numpy": "2.5.4",
+      "safetensors": "0.8.0",
+      "huggingface_hub": "2.4.0"
+    },
+    "gpu": "cpu",
+    "start": "2026-11-10T22:48:24",
+    "end": "2026-11-10T22:48:37",
+    "wall_time_s": 13.294
+  }
+}
