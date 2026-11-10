@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "prouting"
+version = "0.1.0"
+description = "Projection routing for Mixture-of-Experts LLMs (training-free)"
+requires-python = ">=3.10"
+dependencies = []          # see requirements*.txt (pinned per environment)
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-p no:cacheprovider"
+filterwarnings = ["ignore::DeprecationWarning", "ignore::UserWarning"]

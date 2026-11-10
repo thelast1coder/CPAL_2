@@ -1,0 +1,18 @@
+# VM, HF reference path (.venv). transformers is pinned exactly: the adapters are written against its MoE code
+# (fused 3D expert weights, separate router module); see docs/decisions.md.
+# torch: install the CUDA build matching the VM driver if this line pulls the wrong one (verify on the VM).
+torch==2.15.0
+transformers==5.22.2
+accelerate
+safetensors
+huggingface_hub
+datasets
+lm-eval            # (verify) HFLM with an instantiated model
+math-verify        # (verify) package name; import math_verify
+numpy
+scipy
+pandas
+matplotlib
+pyyaml
+pytest
+tqdm

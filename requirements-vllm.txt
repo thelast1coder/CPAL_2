@@ -1,0 +1,6 @@
+# VM, vLLM path (.venv-vllm, separate venv: vLLM pins its own transformers). Used only after check V1.
+# Pin the exact version on the VM when first installed and record it in docs/decisions.md (verify).
+vllm
+datasets
+pyyaml
+pytest
