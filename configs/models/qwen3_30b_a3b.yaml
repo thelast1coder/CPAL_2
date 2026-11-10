@@ -1,0 +1,21 @@
+# Qwen3-30B-A3B: headline model. bf16 if >= 70 GB GPU memory can be reserved, else the FP8 checkpoint
+# (decision D7, made at P1 start and recorded in results/STATUS.md). Fill (verify) fields on the VM.
+name: qwen3_30b_a3b
+hf_id: Qwen/Qwen3-30B-A3B                # (verify)
+hf_id_fp8: Qwen/Qwen3-30B-A3B-FP8        # (verify) D7 fallback
+revision: null
+family: qwen3_moe
+adapter: qwen3_moe
+dtype: bfloat16
+tokenizer_family: qwen3
+num_experts: 128                         # (verify)
+top_k: 8                                 # (verify)
+norm_topk_prob: true                     # (verify) gates renormalised over the top-k
+intermediate_size: 768                   # (verify) moe_intermediate_size
+num_layers: 48                           # (verify)
+shared_experts: 0
+routed_scaling_factor: null
+dense_layers: []                         # (verify) mlp_only_layers, decoder_sparse_step
+layers_to_patch: all
+chat_template: true
+enable_thinking: false                   # non-thinking mode for GSM8K (verify argument name)

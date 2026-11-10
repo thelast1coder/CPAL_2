@@ -1,0 +1,18 @@
+# OLMoE Instruct: K3 (GSM8K, or ARC-Challenge if native accuracy < 25%). Fill (verify) fields on the VM.
+name: olmoe_1b_7b_instruct
+hf_id: allenai/OLMoE-1B-7B-0924-Instruct # (verify)
+revision: null
+family: olmoe
+adapter: olmoe
+dtype: bfloat16
+tokenizer_family: olmoe
+num_experts: 64                          # (verify)
+top_k: 8                                 # (verify)
+norm_topk_prob: false                    # (verify)
+intermediate_size: 1024                  # (verify)
+num_layers: 16                           # (verify)
+shared_experts: 0
+routed_scaling_factor: null
+dense_layers: []
+layers_to_patch: all
+chat_template: true

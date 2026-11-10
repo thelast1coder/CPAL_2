@@ -1,0 +1,38 @@
+# Kill test (PHASE1_KILL_TEST.md). Thresholds live in configs/prereg_kill_test.yaml (never edit them here).
+seed: 0
+models:
+  olmoe_1b_7b:   {stats_model: olmoe_1b_7b, task_model: olmoe_1b_7b_instruct, analysis_tokens: 50000}
+  qwen3_30b_a3b: {stats_model: qwen3_30b_a3b, task_model: qwen3_30b_a3b, analysis_tokens: 30000}
+data:
+  calibration_tokens: 1000000
+  validation_tokens: 20000
+  seq_len: 1024
+  mix: {fineweb_edu: 0.6, metamathqa: 0.4}       # decision D8
+  sources:                                        # (verify) IDs and configs on the VM
+    fineweb_edu: {path: HuggingFaceFW/fineweb-edu, name: sample-10BT, split: train, streaming: true}
+    metamathqa: {path: meta-math/MetaMathQA, split: train}
+    wikitext2: {path: Salesforce/wikitext, name: wikitext-2-raw-v1, split: test}
+    gsm8k: {path: openai/gsm8k, name: main, split: test}
+    math500: {path: HuggingFaceH4/MATH-500, split: test}    # (verify) used only for the leakage check
+calibration:
+  pass1_tokens: 100000
+  clusters: [8, 16]
+  sketch_fraction: 0.05
+  n_min: 32
+  full_gram_tokens: 0
+  batch_size: 8
+layer_eval:
+  budgets: [1, 2, 3, 4]
+  methods: [B1, B2, B3, W-avg, ours-avg, ours-cos, ours-clu, U2, U1]
+  candidates: [ours-avg, ours-cos, ours-clu]
+  rescue: ours-sk
+  ridge: 1.0e-3
+  clusters: c16
+tau_targets: [1.5, 2.0, 3.0]
+downstream:
+  task: gsm8k_fixed250
+  m_candidates: [1, 2, 3]
+  max_new_tokens: 512
+  batch_size: 16
+  ppl_tokens: 50000
+  b3_k2: null          # null = k (the trained value); see docs/related_work_notes.md

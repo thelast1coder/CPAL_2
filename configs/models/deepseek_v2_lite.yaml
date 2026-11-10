@@ -1,0 +1,21 @@
+# DeepSeek-V2-Lite-Chat: generality (P2). Fill (verify) fields on the VM.
+name: deepseek_v2_lite
+hf_id: deepseek-ai/DeepSeek-V2-Lite-Chat # (verify)
+revision: null
+family: deepseek_v2
+adapter: deepseek_v2
+dtype: bfloat16
+tokenizer_family: deepseek_v2
+num_experts: 64                          # (verify)
+top_k: 6                                 # (verify)
+norm_topk_prob: false                    # (verify)
+topk_method: null                        # (verify) greedy or group_limited_greedy
+n_group: null                            # (verify)
+topk_group: null                         # (verify)
+routed_scaling_factor: null              # (verify)
+intermediate_size: null                  # (verify) moe_intermediate_size
+num_layers: null                         # (verify)
+shared_experts: 2                        # (verify) untouched
+dense_layers: [0]                        # (verify) first_k_dense_replace
+layers_to_patch: all
+chat_template: true

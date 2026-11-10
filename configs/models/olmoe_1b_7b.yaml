@@ -1,0 +1,18 @@
+# OLMoE base: K1 and K2 statistics, perplexity. Fill (verify) fields from the downloaded config.json on the VM.
+name: olmoe_1b_7b
+hf_id: allenai/OLMoE-1B-7B-0924          # (verify)
+revision: null                           # filled by scripts/download_models.py with the downloaded commit hash
+family: olmoe
+adapter: olmoe
+dtype: bfloat16                          # fp32 for exactness checks (K0.1), decision D7
+tokenizer_family: olmoe
+num_experts: 64                          # (verify)
+top_k: 8                                 # (verify)
+norm_topk_prob: false                    # (verify) gates = softmax probabilities, no renormalisation
+intermediate_size: 1024                  # (verify) expert intermediate size
+num_layers: 16                           # (verify)
+shared_experts: 0
+routed_scaling_factor: null
+dense_layers: []
+layers_to_patch: all
+chat_template: false                     # base model

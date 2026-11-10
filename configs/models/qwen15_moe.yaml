@@ -1,0 +1,18 @@
+# Qwen1.5-MoE-A2.7B-Chat: generality (P2). Fill (verify) fields on the VM.
+name: qwen15_moe
+hf_id: Qwen/Qwen1.5-MoE-A2.7B-Chat       # (verify)
+revision: null
+family: qwen2_moe
+adapter: qwen2_moe
+dtype: bfloat16
+tokenizer_family: qwen15
+num_experts: 60                          # (verify)
+top_k: 4                                 # (verify)
+norm_topk_prob: false                    # (verify)
+intermediate_size: null                  # (verify) moe_intermediate_size
+num_layers: null                         # (verify)
+shared_experts: 1                        # sigmoid-gated shared expert, untouched
+routed_scaling_factor: null
+dense_layers: []
+layers_to_patch: all
+chat_template: true
