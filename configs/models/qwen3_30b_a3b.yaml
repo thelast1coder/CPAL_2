@@ -1,21 +1,22 @@
 # Qwen3-30B-A3B: headline model. bf16 if >= 70 GB GPU memory can be reserved, else the FP8 checkpoint
-# (decision D7, made at P1 start and recorded in results/STATUS.md). Fill (verify) fields on the VM.
+# (decision D7, made at P1 start and recorded in results/STATUS.md). Fields checked 2026-11-11 against the HF config.json at the pinned revisions.
 name: qwen3_30b_a3b
-hf_id: Qwen/Qwen3-30B-A3B                # (verify)
-hf_id_fp8: Qwen/Qwen3-30B-A3B-FP8        # (verify) D7 fallback
-revision: null
+hf_id: Qwen/Qwen3-30B-A3B                # checked 2026-11-11: public, not gated
+hf_id_fp8: Qwen/Qwen3-30B-A3B-FP8        # D7 fallback; checked 2026-11-11: public, fp8 e4m3, block 128x128, gates kept in bf16
+revision: ad44e777bcd18fa416d9da3bd8f70d33ebb85d39       # pinned 2026-11-11 (HF main at that date)
+revision_fp8: d206ba732169f29bb77fbf80fc2c4b81d4d30782   # pinned 2026-11-11 (HF main at that date)
 family: qwen3_moe
 adapter: qwen3_moe
 dtype: bfloat16
 tokenizer_family: qwen3
-num_experts: 128                         # (verify)
-top_k: 8                                 # (verify)
-norm_topk_prob: true                     # (verify) gates renormalised over the top-k
-intermediate_size: 768                   # (verify) moe_intermediate_size
-num_layers: 48                           # (verify)
+num_experts: 128                         # checked
+top_k: 8                                 # checked
+norm_topk_prob: true                     # checked: gates renormalised over the top-k
+intermediate_size: 768                   # checked: moe_intermediate_size
+num_layers: 48                           # checked
 shared_experts: 0
 routed_scaling_factor: null
-dense_layers: []                         # (verify) mlp_only_layers, decoder_sparse_step
+dense_layers: []                         # mlp_only_layers = [], decoder_sparse_step = 1 (checked)
 layers_to_patch: all
 chat_template: true
-enable_thinking: false                   # non-thinking mode for GSM8K (verify argument name)
+enable_thinking: false                   # non-thinking mode; template checks `enable_thinking is false` (checked 2026-11-11)

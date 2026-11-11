@@ -51,8 +51,8 @@
   "run": {
     "config": {},
     "seed": 0,
-    "git_hash": "1d7c06c62b7336aeed70ac4285b70908c6151b7a",
-    "git_dirty": false,
+    "git_hash": "62dfda6223f3436246695d687ff823169cb405d3",
+    "git_dirty": true,
     "versions": {
       "python": "3.12.1",
       "torch": "2.15.0+cpu",
@@ -63,8 +63,8 @@
       "huggingface_hub": "2.4.0"
     },
     "gpu": "cpu",
-    "start": "2026-11-10T22:42:57",
-    "end": "2026-11-10T22:43:21",
-    "wall_time_s": 23.686
+    "start": "2026-11-11T15:40:23",
+    "end": "2026-11-11T15:40:37",
+    "wall_time_s": 14.169
   }
 }

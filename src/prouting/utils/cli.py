@@ -35,7 +35,8 @@ def setup(args, name: str):
     if args.tiny:
         os.environ["HF_HUB_OFFLINE"] = "1"
     if args.device.startswith("cuda") and args.mem_gb:
-        from .gpu import cap_memory
+        from .gpu import cap_memory, wait_for_memory
+        wait_for_memory(args.mem_gb)  # queue behind the other projects rather than OOM them
         cap_memory(gb=args.mem_gb)
     log = get_logger(name, REPO_ROOT / "logs" / (("tiny_" if args.tiny else "") + f"{name}_{args.model}.log"))
     cfg = load_yaml(args.config)
@@ -85,6 +86,14 @@ def paths(args, cfg: dict, target: Optional[str] = None) -> dict[str, Path]:
                 analysis=art / "analysis", validation=art / "validation")
 
 
+def model_source(mc: dict, fp8: Optional[bool] = None) -> tuple[str, Optional[str]]:
+    """(HF repo ID, pinned revision) for a model config; the FP8 checkpoint has its own revision."""
+    use_fp8 = mc.get("use_fp8") if fp8 is None else fp8
+    if use_fp8 and mc.get("hf_id_fp8"):
+        return mc["hf_id_fp8"], mc.get("revision_fp8")
+    return mc["hf_id"], mc.get("revision")
+
+
 def load_model(name: str, args, dtype: Optional[str] = None):
     """Returns (model, tokenizer or None). Tiny: seeded random model from config classes."""
     if args.tiny:
@@ -95,9 +104,9 @@ def load_model(name: str, args, dtype: Optional[str] = None):
     from transformers import AutoModelForCausalLM, AutoTokenizer
     mc = model_cfg(name)
     dt = getattr(torch, dtype or mc["dtype"])
-    hf_id = mc["hf_id_fp8"] if (mc.get("use_fp8") and mc.get("hf_id_fp8")) else mc["hf_id"]
-    tok = AutoTokenizer.from_pretrained(hf_id, revision=mc.get("revision"))
-    model = AutoModelForCausalLM.from_pretrained(hf_id, revision=mc.get("revision"), dtype=dt,
+    hf_id, rev = model_source(mc)
+    tok = AutoTokenizer.from_pretrained(hf_id, revision=rev)
+    model = AutoModelForCausalLM.from_pretrained(hf_id, revision=rev, dtype=dt,
                                                  device_map=args.device)
     # reference experts kernel (docs/decisions.md); attribute name checked against transformers 5.22.2
     if hasattr(model, "set_experts_implementation"):

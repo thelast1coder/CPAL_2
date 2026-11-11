@@ -1,4 +1,4 @@
-"""GPU sharing helpers. The H100 is shared with two other projects: never kill processes we did not start."""
+"""GPU sharing helpers. The GPU is shared with other projects: never kill processes we did not start."""
 from __future__ import annotations
 
 import subprocess
@@ -22,6 +22,36 @@ def free_memory_gb(device: int = 0) -> Optional[float]:
         return None
     free, _total = torch.cuda.mem_get_info(device)
     return free / 1024**3
+
+
+def wait_for_memory(gb: float, device: int = 0, margin_gb: float = 1.0, poll_s: float = 60.0,
+                    max_wait_min: Optional[float] = None, verbose: bool = True) -> float:
+    """Queue behind the other projects: block until at least gb + margin_gb of GPU memory is free.
+
+    Returns the minutes waited. Raises TimeoutError after max_wait_min (default: env PROUTING_GPU_WAIT_MAX_MIN,
+    else 720). Never touches other processes.
+    """
+    import os
+    import time
+    if not torch.cuda.is_available():
+        return 0.0
+    if max_wait_min is None:
+        max_wait_min = float(os.environ.get("PROUTING_GPU_WAIT_MAX_MIN", "720"))
+    t0 = time.time()
+    while True:
+        free = free_memory_gb(device)
+        if free >= gb + margin_gb:
+            waited = (time.time() - t0) / 60
+            if verbose and waited > 0.05:
+                print(f"[gpu] {free:.1f} GB free after waiting {waited:.1f} min")
+            return waited
+        waited = (time.time() - t0) / 60
+        if waited > max_wait_min:
+            raise TimeoutError(f"[gpu] needed {gb + margin_gb:.1f} GB, only {free:.1f} GB free after {waited:.0f} min")
+        if verbose:
+            print(f"[gpu] waiting: need {gb + margin_gb:.1f} GB, {free:.1f} GB free; others:\n{nvidia_smi_summary()}",
+                  flush=True)
+        time.sleep(poll_s)
 
 
 def cap_memory(fraction: Optional[float] = None, gb: Optional[float] = None, device: int = 0,

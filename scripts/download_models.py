@@ -49,8 +49,15 @@ def main():
     from huggingface_hub import HfApi, snapshot_download
     ypath = ROOT / "configs" / "models" / f"{args.model}.yaml"
     cfg = yaml.safe_load(ypath.read_text(encoding="utf-8"))
-    repo = cfg["hf_id_fp8"] if args.fp8 else cfg["hf_id"]
-    rev = HfApi().model_info(repo).sha
+    sys.path.insert(0, str(ROOT / "src"))
+    from prouting.utils.cli import model_source
+    repo, rev = model_source(cfg, fp8=args.fp8)
+    rev_key = "revision_fp8" if args.fp8 else "revision"
+    latest = HfApi().model_info(repo).sha
+    if rev is None:  # not pinned yet: pin HF main as of today
+        rev = latest
+    elif rev != latest:
+        print(f"note: {repo} main is now {latest}; downloading the pinned revision {rev}")
     path = snapshot_download(repo, revision=rev, allow_patterns=[
         "*.json", "*.safetensors", "tokenizer*", "*.txt", "*.model", "*.tiktoken", "*.jinja"])
     conf = json.loads((Path(path) / "config.json").read_text())
@@ -66,7 +73,8 @@ def main():
     found["decoder_sparse_step"] = conf.get("decoder_sparse_step")
     print(json.dumps(dict(repo=repo, revision=rev, path=path, config=found), indent=2))
     text = ypath.read_text(encoding="utf-8")
-    text = set_yaml_field(text, "revision", rev)
+    if cfg.get(rev_key) != rev:  # keep an already pinned line (and its comment) untouched
+        text = set_yaml_field(text, rev_key, rev)
     if args.fp8:
         text = set_yaml_field(text, "use_fp8", True)
     if args.fill:

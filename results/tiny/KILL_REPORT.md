@@ -9,7 +9,7 @@ Plain summary (three lines): pipeline check only.
 
 ## Setup
 
-- Prereg version 1; git 1d7c06c62b7336aeed70ac4285b70908c6151b7a (dirty: False).
+- Prereg version 1; git 62dfda6223f3436246695d687ff823169cb405d3 (dirty: True).
 - Models: olmoe_1b_7b, qwen3_30b_a3b. Precision and revisions: see results/STATUS.md (decision D7).
 
 ## K0 sanity

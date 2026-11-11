@@ -2095,8 +2095,8 @@
             }
           },
           "seed": 0,
-          "git_hash": "1d7c06c62b7336aeed70ac4285b70908c6151b7a",
-          "git_dirty": false,
+          "git_hash": "62dfda6223f3436246695d687ff823169cb405d3",
+          "git_dirty": true,
           "versions": {
             "python": "3.12.1",
             "torch": "2.15.0+cpu",
@@ -2107,9 +2107,9 @@
             "huggingface_hub": "2.4.0"
           },
           "gpu": "cpu",
-          "start": "2026-11-10T22:47:38",
-          "end": "2026-11-10T22:48:07",
-          "wall_time_s": 28.585
+          "start": "2026-11-11T15:41:27",
+          "end": "2026-11-11T15:41:48",
+          "wall_time_s": 20.9
         }
       },
       "tau": {
@@ -2209,8 +2209,8 @@
         "run": {
           "config": {},
           "seed": 0,
-          "git_hash": "1d7c06c62b7336aeed70ac4285b70908c6151b7a",
-          "git_dirty": false,
+          "git_hash": "62dfda6223f3436246695d687ff823169cb405d3",
+          "git_dirty": true,
           "versions": {
             "python": "3.12.1",
             "torch": "2.15.0+cpu",
@@ -2221,9 +2221,9 @@
             "huggingface_hub": "2.4.0"
           },
           "gpu": "cpu",
-          "start": "2026-11-10T22:42:57",
-          "end": "2026-11-10T22:43:21",
-          "wall_time_s": 23.686
+          "start": "2026-11-11T15:40:23",
+          "end": "2026-11-11T15:40:37",
+          "wall_time_s": 14.169
         }
       },
       "k3_why": {
@@ -3430,8 +3430,8 @@
             }
           },
           "seed": 0,
-          "git_hash": "1d7c06c62b7336aeed70ac4285b70908c6151b7a",
-          "git_dirty": false,
+          "git_hash": "62dfda6223f3436246695d687ff823169cb405d3",
+          "git_dirty": true,
           "versions": {
             "python": "3.12.1",
             "torch": "2.15.0+cpu",
@@ -3442,9 +3442,9 @@
             "huggingface_hub": "2.4.0"
           },
           "gpu": "cpu",
-          "start": "2026-11-10T22:50:36",
-          "end": "2026-11-10T22:50:55",
-          "wall_time_s": 19.191
+          "start": "2026-11-11T15:43:41",
+          "end": "2026-11-11T15:44:06",
+          "wall_time_s": 24.519
         }
       },
       "tau": {
@@ -3547,8 +3547,8 @@
         "run": {
           "config": {},
           "seed": 0,
-          "git_hash": "1d7c06c62b7336aeed70ac4285b70908c6151b7a",
-          "git_dirty": false,
+          "git_hash": "62dfda6223f3436246695d687ff823169cb405d3",
+          "git_dirty": true,
           "versions": {
             "python": "3.12.1",
             "torch": "2.15.0+cpu",
@@ -3559,9 +3559,9 @@
             "huggingface_hub": "2.4.0"
           },
           "gpu": "cpu",
-          "start": "2026-11-10T22:48:24",
-          "end": "2026-11-10T22:48:37",
-          "wall_time_s": 13.294
+          "start": "2026-11-11T15:41:55",
+          "end": "2026-11-11T15:42:09",
+          "wall_time_s": 13.577
         }
       },
       "k3_why": {
@@ -3577,8 +3577,8 @@
       "prereg_version": 1
     },
     "seed": 0,
-    "git_hash": "1d7c06c62b7336aeed70ac4285b70908c6151b7a",
-    "git_dirty": false,
+    "git_hash": "62dfda6223f3436246695d687ff823169cb405d3",
+    "git_dirty": true,
     "versions": {
       "python": "3.12.1",
       "torch": "2.15.0+cpu",
@@ -3589,8 +3589,8 @@
       "huggingface_hub": "2.4.0"
     },
     "gpu": "cpu",
-    "start": "2026-11-10T22:50:59",
-    "end": "2026-11-10T22:51:03",
-    "wall_time_s": 3.183
+    "start": "2026-11-11T15:44:15",
+    "end": "2026-11-11T15:44:23",
+    "wall_time_s": 8.073
   }
 }

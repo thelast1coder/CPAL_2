@@ -1,16 +1,16 @@
-# OLMoE base: K1 and K2 statistics, perplexity. Fill (verify) fields from the downloaded config.json on the VM.
+# OLMoE base: K1 and K2 statistics, perplexity. Fields checked 2026-11-11 against the HF config.json at the pinned revision.
 name: olmoe_1b_7b
-hf_id: allenai/OLMoE-1B-7B-0924          # (verify)
-revision: null                           # filled by scripts/download_models.py with the downloaded commit hash
+hf_id: allenai/OLMoE-1B-7B-0924          # checked 2026-11-11: public, not gated
+revision: 6d84c48581ece794365f2b8e9cfb043c68ade9c5   # pinned 2026-11-11 (HF main at that date)
 family: olmoe
 adapter: olmoe
 dtype: bfloat16                          # fp32 for exactness checks (K0.1), decision D7
 tokenizer_family: olmoe
-num_experts: 64                          # (verify)
-top_k: 8                                 # (verify)
-norm_topk_prob: false                    # (verify) gates = softmax probabilities, no renormalisation
-intermediate_size: 1024                  # (verify) expert intermediate size
-num_layers: 16                           # (verify)
+num_experts: 64                          # checked
+top_k: 8                                 # checked
+norm_topk_prob: false                    # checked: gates = softmax probabilities, no renormalisation
+intermediate_size: 1024                  # checked: expert intermediate size
+num_layers: 16                           # checked
 shared_experts: 0
 routed_scaling_factor: null
 dense_layers: []

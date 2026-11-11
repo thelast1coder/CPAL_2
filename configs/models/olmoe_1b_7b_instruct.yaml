@@ -1,16 +1,16 @@
-# OLMoE Instruct: K3 (GSM8K, or ARC-Challenge if native accuracy < 25%). Fill (verify) fields on the VM.
+# OLMoE Instruct: K3 (GSM8K, or ARC-Challenge if native accuracy < 25%). Fields checked 2026-11-11 against the HF config.json at the pinned revision.
 name: olmoe_1b_7b_instruct
-hf_id: allenai/OLMoE-1B-7B-0924-Instruct # (verify)
-revision: null
+hf_id: allenai/OLMoE-1B-7B-0924-Instruct # checked 2026-11-11: public, not gated
+revision: 7f1c97f440f06ce36705e4f2b843edb5925f4498   # pinned 2026-11-11 (HF main at that date)
 family: olmoe
 adapter: olmoe
 dtype: bfloat16
 tokenizer_family: olmoe
-num_experts: 64                          # (verify)
-top_k: 8                                 # (verify)
-norm_topk_prob: false                    # (verify)
-intermediate_size: 1024                  # (verify)
-num_layers: 16                           # (verify)
+num_experts: 64                          # checked
+top_k: 8                                 # checked
+norm_topk_prob: false                    # checked
+intermediate_size: 1024                  # checked
+num_layers: 16                           # checked
 shared_experts: 0
 routed_scaling_factor: null
 dense_layers: []

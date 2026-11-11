@@ -17,3 +17,4 @@ hf_home/
 *.egg-info/
 build/
 dist/
+vm_pull/
