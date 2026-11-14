@@ -34,6 +34,6 @@ def test_wait_for_memory_is_a_no_op_without_cuda(monkeypatch):
 
 @pytest.mark.skipif(shutil.which("bash") is None, reason="needs bash")
 def test_runner_rejects_unknown_stop_point():
-    r = subprocess.run(["bash", "scripts/run_kill_test.sh", "--tiny", "--stop-after", "k2"],
+    r = subprocess.run(["bash", "scripts/run_kill_test.sh", "--tiny", "--stop-after", "k3"],
                        cwd=REPO_ROOT, capture_output=True, text=True)
-    assert r.returncode == 2 and "--stop-after takes k0" in r.stdout
+    assert r.returncode == 2 and "--stop-after takes k0 or k2" in r.stdout

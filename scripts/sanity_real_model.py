@@ -27,7 +27,7 @@ from prouting.routing import linalg as L
 from prouting.routing.patch import patch_model
 from prouting.routing.policies import Native, Projection, TopMRenorm
 from prouting.utils.cli import base_parser, concrete_model, load_model, model_cfg, paths, setup
-from prouting.utils.io import load_torch, write_json
+from prouting.utils.io import load_torch, read_json, write_json
 from prouting.utils.logging import run_record
 
 
@@ -100,6 +100,10 @@ def main():
     args = p.parse_args()
     cfg, log = setup(args, "sanity_real_model")
     P = paths(args, cfg)
+    prev = P["res"] / "k0.json"
+    if prev.exists() and not args.force and read_json(prev).get("all_pass"):
+        log.info(f"[K0] already passed ({prev}); skipping (use --force to rerun)")
+        return
     rec = run_record({}, args.seed)
     st = SplitTokens.from_dict(load_torch(P["data"] / "validation.pt"))
     checks = {}
