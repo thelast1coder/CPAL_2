@@ -1,0 +1,118 @@
+{
+  "tokens": 1000653,
+  "wall_time_s": 321.16698384284973,
+  "layers": {
+    "0": {
+      "tokens": 1000653,
+      "backoff_share": 0.0,
+      "r_bar": 0.09821460953017926
+    },
+    "1": {
+      "tokens": 1000653,
+      "backoff_share": 0.0,
+      "r_bar": 0.05495223430655443
+    },
+    "2": {
+      "tokens": 1000653,
+      "backoff_share": 0.000496031746031746,
+      "r_bar": 0.04155624181901122
+    },
+    "3": {
+      "tokens": 1000653,
+      "backoff_share": 0.001984126984126984,
+      "r_bar": 0.03672170119589684
+    },
+    "4": {
+      "tokens": 1000653,
+      "backoff_share": 0.001488095238095238,
+      "r_bar": 0.0361722166108135
+    },
+    "5": {
+      "tokens": 1000653,
+      "backoff_share": 0.001488095238095238,
+      "r_bar": 0.03832655488699274
+    },
+    "6": {
+      "tokens": 1000653,
+      "backoff_share": 0.003472222222222222,
+      "r_bar": 0.03258229515953767
+    },
+    "7": {
+      "tokens": 1000653,
+      "backoff_share": 0.007936507936507936,
+      "r_bar": 0.03364971683159099
+    },
+    "8": {
+      "tokens": 1000653,
+      "backoff_share": 0.024305555555555556,
+      "r_bar": 0.03413949552234778
+    },
+    "9": {
+      "tokens": 1000653,
+      "backoff_share": 0.019345238095238096,
+      "r_bar": 0.036504352754298544
+    },
+    "10": {
+      "tokens": 1000653,
+      "backoff_share": 0.014384920634920634,
+      "r_bar": 0.03226147820884475
+    },
+    "11": {
+      "tokens": 1000653,
+      "backoff_share": 0.00248015873015873,
+      "r_bar": 0.028034978746352662
+    },
+    "12": {
+      "tokens": 1000653,
+      "backoff_share": 0.000496031746031746,
+      "r_bar": 0.03382181000081634
+    },
+    "13": {
+      "tokens": 1000653,
+      "backoff_share": 0.0,
+      "r_bar": 0.028642325117135367
+    },
+    "14": {
+      "tokens": 1000653,
+      "backoff_share": 0.000992063492063492,
+      "r_bar": 0.07483834820025029
+    },
+    "15": {
+      "tokens": 1000653,
+      "backoff_share": 0.005456349206349206,
+      "r_bar": 0.24071254388379199
+    }
+  },
+  "run": {
+    "config": {
+      "pass1_tokens": 100000,
+      "clusters": [
+        8,
+        16
+      ],
+      "sketch_fraction": 0.05,
+      "n_min": 32,
+      "full_gram_tokens": 0,
+      "batch_size": 8
+    },
+    "seed": 0,
+    "git_hash": "a22422f6a0cc1282b23251687fd7d44f2de8d926",
+    "git_dirty": false,
+    "versions": {
+      "python": "3.12.3",
+      "torch": "2.15.0+cu132",
+      "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+      "transformers": "5.22.2",
+      "numpy": "2.5.4",
+      "accelerate": "1.15.0",
+      "datasets": "5.2.0",
+      "lm_eval": "0.4.13",
+      "safetensors": "0.8.0",
+      "huggingface_hub": "2.4.0"
+    },
+    "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+    "start": "2026-11-14T18:27:40",
+    "end": "2026-11-14T18:33:05",
+    "wall_time_s": 324.86
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "info": {
+    "validation": {
+      "tokens": 20326,
+      "bytes": 358136464
+    },
+    "analysis": {
+      "tokens": 50772,
+      "bytes": 894472848
+    }
+  },
+  "run": {
+    "config": {
+      "batch_size": 4,
+      "target": "stats"
+    },
+    "seed": 0,
+    "git_hash": "a22422f6a0cc1282b23251687fd7d44f2de8d926",
+    "git_dirty": false,
+    "versions": {
+      "python": "3.12.3",
+      "torch": "2.15.0+cu132",
+      "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+      "transformers": "5.22.2",
+      "numpy": "2.5.4",
+      "accelerate": "1.15.0",
+      "datasets": "5.2.0",
+      "lm_eval": "0.4.13",
+      "safetensors": "0.8.0",
+      "huggingface_hub": "2.4.0"
+    },
+    "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+    "start": "2026-11-14T18:33:06",
+    "end": "2026-11-14T18:33:31",
+    "wall_time_s": 24.753
+  }
+}

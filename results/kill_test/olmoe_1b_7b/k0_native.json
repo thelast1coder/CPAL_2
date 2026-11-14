@@ -1,0 +1,42 @@
+{
+  "task": "gsm8k_fixed250",
+  "accuracy": 0.488,
+  "n": 250,
+  "model": "olmoe_1b_7b_instruct",
+  "run": {
+    "config": {
+      "downstream": {
+        "task": "gsm8k_fixed250",
+        "m_candidates": [
+          1,
+          2,
+          3
+        ],
+        "max_new_tokens": 512,
+        "batch_size": 16,
+        "ppl_tokens": 50000,
+        "b3_k2": null
+      },
+      "step": "K0.6 native accuracy"
+    },
+    "seed": 0,
+    "git_hash": "cb1e612b32270b1ac052fe7cc37e2dc7994aa414",
+    "git_dirty": false,
+    "versions": {
+      "python": "3.12.3",
+      "torch": "2.15.0+cu132",
+      "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+      "transformers": "5.22.2",
+      "numpy": "2.5.4",
+      "accelerate": "1.15.0",
+      "datasets": "5.2.0",
+      "lm_eval": "0.4.13",
+      "safetensors": "0.8.0",
+      "huggingface_hub": "2.4.0"
+    },
+    "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+    "start": "2026-11-14T16:07:06",
+    "end": "2026-11-14T16:12:05",
+    "wall_time_s": 298.656
+  }
+}

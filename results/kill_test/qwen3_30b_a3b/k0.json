@@ -1,0 +1,53 @@
+{
+  "checks": {
+    "K0.2": {
+      "identical": 20,
+      "of": 20,
+      "ppl_native": 8.707320225237307,
+      "ppl_wrapped": 8.707320225237307,
+      "ppl_rel_diff": 0.0,
+      "pass": true
+    },
+    "K0.3_task": {
+      "max_rel_diff": 3.5541195335729853e-07,
+      "tol": 0.001,
+      "pass": true
+    },
+    "K0.4_task": {
+      "layer": 24,
+      "online": 1.4011577977624532,
+      "offline": 1.3998241797745918,
+      "rel_gap": 0.0009517971423283288,
+      "pass": true
+    },
+    "K0.5_task": {
+      "layer": 24,
+      "rel_error": 0.0,
+      "tol": 0.001,
+      "pass": true
+    }
+  },
+  "all_pass": true,
+  "run": {
+    "config": {},
+    "seed": 0,
+    "git_hash": "cb1e612b32270b1ac052fe7cc37e2dc7994aa414",
+    "git_dirty": false,
+    "versions": {
+      "python": "3.12.3",
+      "torch": "2.15.0+cu132",
+      "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+      "transformers": "5.22.2",
+      "numpy": "2.5.4",
+      "accelerate": "1.15.0",
+      "datasets": "5.2.0",
+      "lm_eval": "0.4.13",
+      "safetensors": "0.8.0",
+      "huggingface_hub": "2.4.0"
+    },
+    "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+    "start": "2026-11-14T16:01:13",
+    "end": "2026-11-14T16:06:27",
+    "wall_time_s": 314.298
+  }
+}

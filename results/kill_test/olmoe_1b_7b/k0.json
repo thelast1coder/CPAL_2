@@ -1,0 +1,76 @@
+{
+  "checks": {
+    "K0.1": {
+      "max_abs_logit_diff": 0.0,
+      "tol": 0.0001,
+      "pass": true
+    },
+    "K0.3": {
+      "max_rel_diff": 5.838645023345474e-07,
+      "tol": 0.001,
+      "pass": true
+    },
+    "K0.4": {
+      "layer": 8,
+      "online": 0.941597595604457,
+      "offline": 0.9415974152013317,
+      "rel_gap": 1.9159259344898733e-07,
+      "pass": true
+    },
+    "K0.5": {
+      "layer": 8,
+      "rel_error": 0.0,
+      "tol": 0.0001,
+      "pass": true
+    },
+    "K0.2": {
+      "identical": 20,
+      "of": 20,
+      "ppl_native": 10.19241670853021,
+      "ppl_wrapped": 10.19241670853021,
+      "ppl_rel_diff": 0.0,
+      "pass": true
+    },
+    "K0.3_task": {
+      "max_rel_diff": 3.7038407182116457e-07,
+      "tol": 0.001,
+      "pass": true
+    },
+    "K0.4_task": {
+      "layer": 8,
+      "online": 0.9506457161869424,
+      "offline": 0.9486111886280425,
+      "rel_gap": 0.002140153291870295,
+      "pass": true
+    },
+    "K0.5_task": {
+      "layer": 8,
+      "rel_error": 0.0,
+      "tol": 0.001,
+      "pass": true
+    }
+  },
+  "all_pass": true,
+  "run": {
+    "config": {},
+    "seed": 0,
+    "git_hash": "aff5ec32b6c850705d1559c9d06c9475cd0a31a8",
+    "git_dirty": false,
+    "versions": {
+      "python": "3.12.3",
+      "torch": "2.15.0+cu132",
+      "platform": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+      "transformers": "5.22.2",
+      "numpy": "2.5.4",
+      "accelerate": "1.15.0",
+      "datasets": "5.2.0",
+      "lm_eval": "0.4.13",
+      "safetensors": "0.8.0",
+      "huggingface_hub": "2.4.0"
+    },
+    "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+    "start": "2026-11-14T15:55:40",
+    "end": "2026-11-14T15:57:17",
+    "wall_time_s": 96.788
+  }
+}

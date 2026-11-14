@@ -1,8 +1,18 @@
 # STATUS
 
 ## Now
-P1 on VM 2 (Jarvis Labs, RTX PRO 6000 Blackwell 96 GB). K0 passed on both models (14 Nov 2026, 16:40 UTC).
-Stopped at the K0 gate. Next, after Dawar's go-ahead: calibration, recording, K1 and K2, tau, K3.
+**Kill test: NO-GO (15 Nov 2026).** K1 and K2 are NO-GO on both models (prereg rule); K3 not needed and
+not run. Post-mortem: results/kill_test/POSTMORTEM.md. VM 2 destroyed (Jarvis instance 574523, about 5 h 15 min,
+about Rs 1,100). Waiting for Dawar's decision on what comes next.
+
+## K1 and K2 (14 Nov 2026, 18:27 to 19:06 UTC): NO-GO on both models
+| | OLMoE | Qwen3-30B-A3B | GO bar |
+|---|---|---|---|
+| K1 share of layers with median m95 <= 3 | 0% (median m95 5 of 8) | 2% (median m95 6 of 8) | >= 60% |
+| K2 ratio at m = 1 / 2 (primary) | 1.03 / 1.05 (ours-avg) | 1.03 / 1.04 (ours-cos) | >= 2.0 |
+| U1 ceiling | 1.17 / 1.23 | 1.11 / 1.14 | |
+| Rescue ours-sk | 0.99 / 0.99 | 0.96 / 0.95 | >= 2.0 |
+Files: results/kill_test/<model>/layer_eval.json and .csv.
 
 ## K0 (14 Nov 2026): PASS on both models. Stopped at the gate; waiting for Dawar's go-ahead for K1 to K3.
 | Check | OLMoE (base fp32 / Instruct bf16) | Qwen3-30B-A3B (bf16) | Bar |
@@ -63,7 +73,7 @@ Stopped at the K0 gate. Next, after Dawar's go-ahead: calibration, recording, K1
 - None.
 
 ## Blockers
-- None.
+- None. Next phase needs Dawar's decision (the plan says stop this line on NO-GO).
 
 ## VM notes
 - VM 1 (11 Nov 2026): vast.ai instance 60187060, 1x RTX 5090 32 GB, 30 GB RAM, 8 CPUs, 350 GB disk,
@@ -90,3 +100,5 @@ Stopped at the K0 gate. Next, after Dawar's go-ahead: calibration, recording, K1
 - 2026-11-14: VM 2 (RTX PRO 6000 Blackwell 96 GB, Jarvis Labs). D7 = bf16. P1 started to K0.
 - 2026-11-14 14:45 UTC: first K0 on OLMoE: K0.1, K0.3, K0.4, K0.5 pass (K0.1 logit difference 0.0 in fp32); K0.2 FAIL (7/20 identical, ppl rel diff 0.0007). Cause: float32 vs bf16 expert combine. Fixed; K0 rerun. Failed record kept as results/kill_test/olmoe_1b_7b/k0_run1_failed.json on the VM.
 - 2026-11-14: Qwen3 K0 first attempt ran out of memory (fp32 load for K0.1); fixed (04b08e7). K0.6 added as `--native-only` (cb1e612). K0 PASS on both models; native GSM8K 48.8% (OLMoE-Instruct), 93.2% (Qwen3).
+- 2026-11-14 19:06 UTC: K1 and K2 done on both models: NO-GO. Results copied (summary files complete; per-token records only 207 MB of 4.1 GB). Automatic destroy failed on a network error; instance destroyed by hand at about 19:50 UTC.
+- 2026-11-15: Post-mortem written (results/kill_test/POSTMORTEM.md). Found numerically unstable Gram variants on real data (ours-clu OLMoE, ours-avg Qwen3); does not affect the verdict.
