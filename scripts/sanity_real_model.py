@@ -26,7 +26,7 @@ from prouting.calibrate.driver import calib_from_dict
 from prouting.routing import linalg as L
 from prouting.routing.patch import patch_model
 from prouting.routing.policies import Native, Projection, TopMRenorm
-from prouting.utils.cli import base_parser, concrete_model, load_model, paths, setup
+from prouting.utils.cli import base_parser, concrete_model, load_model, model_cfg, paths, setup
 from prouting.utils.io import load_torch, write_json
 from prouting.utils.logging import run_record
 
@@ -103,17 +103,23 @@ def main():
     rec = run_record({}, args.seed)
     st = SplitTokens.from_dict(load_torch(P["data"] / "validation.pt"))
     checks = {}
-    # K0.1: stats model in float32
-    model, _ = load_model(concrete_model(args, cfg), args, dtype="float32")
-    ad = get_adapter(model)
-    dev = next(model.parameters()).device
+    dev = torch.device(args.device)
     L01 = 256 if not args.tiny else st.input_ids.shape[1]
     toks = st.input_ids[:4, :L01].to(dev)
-    checks["K0.1"] = k01(model, ad, toks, 1e-4)
     mask = st.attention_mask[:4, :L01].to(dev)
-    calib = quick_calib(model, ad, toks, mask)
-    checks["K0.3"], checks["K0.4"], checks["K0.5"] = gram_checks(model, ad, calib, toks, mask, True)
-    del model
+    # K0.1 and fp32 K0.3 to K0.5: stats model in float32, only where the spec runs them (OLMoE base;
+    # PHASE1_KILL_TEST.md Section 3). Qwen3-30B-A3B in fp32 would need about 122 GB.
+    if args.tiny or model_cfg(concrete_model(args, cfg)).get("k0_fp32", False):
+        model, _ = load_model(concrete_model(args, cfg), args, dtype="float32")
+        ad = get_adapter(model)
+        checks["K0.1"] = k01(model, ad, toks, 1e-4)
+        calib = quick_calib(model, ad, toks, mask)
+        checks["K0.3"], checks["K0.4"], checks["K0.5"] = gram_checks(model, ad, calib, toks, mask, True)
+        del model, calib
+        if dev.type == "cuda":
+            torch.cuda.empty_cache()
+    else:
+        log.info("[K0] fp32 checks (K0.1) not run for this model: OLMoE base only (spec)")
     # K0.2 and the bf16 versions of K0.3 to K0.5: task model in its working precision
     if not args.skip_k02:
         model, tok = load_model(concrete_model(args, cfg, "task"), args)

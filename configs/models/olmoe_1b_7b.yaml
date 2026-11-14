@@ -5,6 +5,7 @@ revision: 6d84c48581ece794365f2b8e9cfb043c68ade9c5   # pinned 2026-11-11 (HF mai
 family: olmoe
 adapter: olmoe
 dtype: bfloat16                          # fp32 for exactness checks (K0.1), decision D7
+k0_fp32: true                            # K0.1 and fp32 K0.3 to K0.5 run on this model only (spec)
 tokenizer_family: olmoe
 num_experts: 64                          # checked
 top_k: 8                                 # checked
