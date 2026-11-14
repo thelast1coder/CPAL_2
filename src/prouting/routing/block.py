@@ -54,23 +54,31 @@ class ReducedMoEBlock(nn.Module):
         sel, w = self.policy(ctx)
         nz = w != 0
         need_slots = self.policy.needs_outputs or any(ns for _, ns in self.observers)
-        acc = torch.zeros(n, shape[-1], dtype=torch.float32, device=x.device)
+        # The combine mirrors the transformers eager experts loop exactly: E * w and index_add in the model's
+        # dtype, experts in ascending order, (slot, token) order within an expert. With the native policy the
+        # wrapper is then bit-identical to the native model in bf16 as well as fp32 (K0.2; docs/decisions.md,
+        # 2026-11-14). Slot outputs for observers and reweighting stay float32 (exact copies of E).
+        cdt = hidden_states.dtype
+        acc = torch.zeros(n, shape[-1], dtype=cdt, device=x.device)
         slot_out = torch.zeros(n, sel.shape[1], shape[-1], dtype=torch.float32, device=x.device) if need_slots else None
-        for e in torch.unique(sel[nz]).tolist():
-            # (slot, token) order, as the transformers eager experts loop
+        experts = torch.unique(sel[nz]).tolist()
+        for e in experts:
             slots, rows = ((sel == e) & nz).T.nonzero(as_tuple=True)
-            E = ad.expert_forward(blk, e, x[rows]).float()
+            E = ad.expert_forward(blk, e, x[rows])
             if need_slots:
-                slot_out[rows, slots] = E
+                slot_out[rows, slots] = E.float()
             else:
-                acc.index_add_(0, rows, w[rows, slots].float().unsqueeze(-1) * E)
+                acc.index_add_(0, rows, (E * w[rows, slots].to(E.dtype).unsqueeze(-1)).to(cdt))
         if self.policy.needs_outputs:
             w = self.policy.reweight(ctx, slot_out)
             nz = w != 0
         if need_slots:
-            acc = torch.einsum("nm,nmd->nd", w.float(), slot_out)
+            for e in torch.unique(sel[nz]).tolist():
+                slots, rows = ((sel == e) & nz).T.nonzero(as_tuple=True)
+                E = slot_out[rows, slots].to(cdt)
+                acc.index_add_(0, rows, E * w[rows, slots].to(cdt).unsqueeze(-1))
         if getattr(self.policy, "adds_sketch", False):
-            acc = acc + self.policy.extra_output(ctx)
+            acc = acc + self.policy.extra_output(ctx).to(cdt)
         for fn, _ in self.observers:
             fn(ctx, slot_out, sel, w)
         # realised budget: computed (token, expert) pairs on valid tokens
@@ -82,6 +90,6 @@ class ReducedMoEBlock(nn.Module):
             self.counted_tokens += int(valid.sum())
         shared = ad.shared_forward(blk, x)
         if shared is not None:
-            acc = acc + shared.float()
-        y = acc.to(hidden_states.dtype).reshape(shape)
+            acc = acc + shared.to(cdt)
+        y = acc.reshape(shape)
         return ad.wrap_output(blk, y, logits)

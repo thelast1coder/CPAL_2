@@ -52,7 +52,9 @@ P1 running on VM 2 (Jarvis Labs, RTX PRO 6000 Blackwell 96 GB), started 14 Nov 2
 - Repository: https://github.com/thelast1coder/CPAL_2 (origin; P0 pushed at 62dfda6).
 
 ## Deviations log
-(none)
+| Date | What changed | Why | Effect on the decision |
+|---|---|---|---|
+| 2026-11-14 | Expert combine in the wrapper now in the model's dtype, mirroring transformers' eager loop (was float32; PHASE0_SETUP.md 2.2) | First K0 run on OLMoE: K0.2 failed (7 of 20 identical bf16 greedy outputs; perplexity within 0.07%) because native accumulates in bf16. Implementation fix, logged in docs/decisions.md | None: no threshold, model, task or metric changed; K0 rerun from scratch after the fix |
 
 ## Log
 - 2026-11-10: P0 complete. pytest: 32 passed (CPU, clean state, 8 min 53 s including the tiny end-to-end run). Tiny report: results/tiny/KILL_REPORT.md (TINY, meaningless).
@@ -61,3 +63,4 @@ P1 running on VM 2 (Jarvis Labs, RTX PRO 6000 Blackwell 96 GB), started 14 Nov 2
 - 2026-11-11: Pre-VM preparation: IDs checked and revisions pinned, GPU queue, `--stop-after k0`,
   `p1_start.sh`, `pull_results.sh`. pytest: 38 passed (CPU, 4 min 42 s). Tiny run with `--stop-after k0`: all K0 checks pass.
 - 2026-11-14: VM 2 (RTX PRO 6000 Blackwell 96 GB, Jarvis Labs). D7 = bf16. P1 started to K0.
+- 2026-11-14 14:45 UTC: first K0 on OLMoE: K0.1, K0.3, K0.4, K0.5 pass (K0.1 logit difference 0.0 in fp32); K0.2 FAIL (7/20 identical, ppl rel diff 0.0007). Cause: float32 vs bf16 expert combine. Fixed; K0 rerun. Failed record kept as results/kill_test/olmoe_1b_7b/k0_run1_failed.json on the VM.

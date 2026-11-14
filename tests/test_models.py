@@ -30,6 +30,20 @@ def test_T1_native_patch_equals_original(family, k):
     assert torch.equal(back.logits, ref.logits)
 
 
+@pytest.mark.parametrize("family,k", [("olmoe", 4), ("qwen3_moe", 4)])
+def test_T1_bf16_native_patch_is_bit_identical(family, k):
+    """K0.2 on real models: in bf16 the wrapper must combine experts exactly as the native eager loop."""
+    model = BUILDERS[family](k=k).to(torch.bfloat16)
+    ad = get_adapter(model)
+    x = random_tokens(3, 20)
+    with torch.no_grad():
+        ref = model(x)
+        h = patch_model(model, ad)
+        out = model(x)
+        h.restore()
+    assert torch.equal(out.logits, ref.logits)
+
+
 def test_T1_deepseek_group_limited():
     model = BUILDERS["deepseek_v2"](topk_method="group_limited_greedy")
     ad = get_adapter(model)
