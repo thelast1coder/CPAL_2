@@ -1,8 +1,26 @@
 # STATUS
 
 ## Now
-P1 running on VM 2 (Jarvis Labs, RTX PRO 6000 Blackwell 96 GB), started 14 Nov 2026 14:37 UTC:
-`scripts/p1_start.sh --qwen bf16` (setup, downloads, data, K0 for both models, then stop for the K0 report).
+P1 on VM 2 (Jarvis Labs, RTX PRO 6000 Blackwell 96 GB). K0 passed on both models (14 Nov 2026, 16:40 UTC).
+Stopped at the K0 gate. Next, after Dawar's go-ahead: calibration, recording, K1 and K2, tau, K3.
+
+## K0 (14 Nov 2026): PASS on both models. Stopped at the gate; waiting for Dawar's go-ahead for K1 to K3.
+| Check | OLMoE (base fp32 / Instruct bf16) | Qwen3-30B-A3B (bf16) | Bar |
+|---|---|---|---|
+| K0.1 wrapper exact, fp32 logits | 0.0 | not run (OLMoE only, spec) | <= 1e-4 |
+| K0.2 identical greedy outputs (20 GSM8K prompts) | 20/20 | 20/20 | >= 19/20 |
+| K0.2 WikiText-2 perplexity, native vs wrapped | 10.1924 vs 10.1924 (diff 0.0) | 8.7073 vs 8.7073 (diff 0.0) | within 0.2% |
+| K0.3 Gram identity, max rel diff | 5.8e-7 (fp32), 3.7e-7 (bf16) | 3.6e-7 | <= 1e-3 |
+| K0.4 offline vs online, rel gap (middle layer) | 1.9e-7 (fp32), 2.1e-3 (bf16) | 9.5e-4 | <= 1% |
+| K0.5 full set reproduces native, rel error | 0.0 / 0.0 | 0.0 | <= 1e-4 / 1e-3 |
+| K0.6 native GSM8K fixed-250 accuracy | 48.8% (OLMoE-Instruct) | 93.2% (non-thinking) | recorded |
+- K0.6 vs model cards: OLMoE-Instruct card GSM8K 45.5 (8-shot CoT, +DPO row); ours 48.8 zero-shot on the
+  fixed 250: consistent. OLMoE stays on GSM8K for K3 (rule: switch to ARC only below 25%). The Qwen3 card has
+  no GSM8K figure (points to the blog and technical report) (verify there).
+- Results pulled to the laptop: vm_pull/ (k0.json, k0_native.json, k3/B0.json(l), logs). Failed first OLMoE
+  record kept as k0_run1_failed.json.
+- Record note: Qwen3 k0.json shows git cb1e612 because the repo was updated during its run; the K0 code was
+  identical at 04b08e7 and cb1e612 (only run_downstream.py changed).
 
 ## Decision D7 (fixed 14 Nov 2026, before K0)
 - Qwen3-30B-A3B runs in **bf16** for every number. Reason: the prereg rule is bf16 if at least 70 GB of GPU
@@ -64,3 +82,4 @@ P1 running on VM 2 (Jarvis Labs, RTX PRO 6000 Blackwell 96 GB), started 14 Nov 2
   `p1_start.sh`, `pull_results.sh`. pytest: 38 passed (CPU, 4 min 42 s). Tiny run with `--stop-after k0`: all K0 checks pass.
 - 2026-11-14: VM 2 (RTX PRO 6000 Blackwell 96 GB, Jarvis Labs). D7 = bf16. P1 started to K0.
 - 2026-11-14 14:45 UTC: first K0 on OLMoE: K0.1, K0.3, K0.4, K0.5 pass (K0.1 logit difference 0.0 in fp32); K0.2 FAIL (7/20 identical, ppl rel diff 0.0007). Cause: float32 vs bf16 expert combine. Fixed; K0 rerun. Failed record kept as results/kill_test/olmoe_1b_7b/k0_run1_failed.json on the VM.
+- 2026-11-14: Qwen3 K0 first attempt ran out of memory (fp32 load for K0.1); fixed (04b08e7). K0.6 added as `--native-only` (cb1e612). K0 PASS on both models; native GSM8K 48.8% (OLMoE-Instruct), 93.2% (Qwen3).
