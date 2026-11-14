@@ -51,9 +51,16 @@ Stopped at the K0 gate. Next, after Dawar's go-ahead: calibration, recording, K1
   `enable_thinking` flag checked against Hugging Face; revisions pinned (configs/models/*.yaml).
 - GPU queue: every GPU step waits for free memory before starting. K0 stop: `--stop-after k0`.
 
+## Decisions from Dawar (15 Nov 2026, before any K3 result)
+- B3 on OLMoE: the B3 of record is the literal k2 = k (as published); B1 (= the k2 = N reading) is also
+  run and reported at m* on OLMoE's K3 task (configs/experiments/kill_test.yaml: b1_at_mstar_models).
+- Scope: run K1 and K2 now (`--stop-after k2`), the minimum needed; K3 only after the K2 report and go-ahead.
+- Instance lifecycle (Jarvis Labs CLI `jl`, laptop venv ~/.jlcli): when K1 and K2 finish, copy results to
+  the laptop; if the verdict makes K3 unnecessary (NO-GO), destroy the instance at once; if GO or AMBER,
+  pause it (storage still billed) and destroy it after K3. Needs `jl setup` with Dawar's API key.
+
 ## Open questions for Dawar
-- B3 (k2 fix) on OLMoE: the router does not renormalise, so the paper's "trained value" corresponds to
-  k2 = N (= keep gates). Default in the code is the literal k2 = k. Which do you want before K3?
+- None.
 
 ## Blockers
 - None.

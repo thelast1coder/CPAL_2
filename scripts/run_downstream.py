@@ -19,7 +19,7 @@ from prouting.calibrate.driver import calib_from_dict
 from prouting.eval.stats import paired_bootstrap, recovery
 from prouting.routing.baselines import K2Fix
 from prouting.routing.patch import patch_model
-from prouting.routing.policies import AddProjection, Native, Projection, TopMRenorm
+from prouting.routing.policies import AddProjection, Native, Projection, TopMKeep, TopMRenorm
 from prouting.utils.cli import base_parser, concrete_model, load_model, load_yaml, model_cfg, paths, setup
 from prouting.utils.io import load_torch, read_json, write_json
 from prouting.utils.logging import REPO_ROOT, run_record
@@ -154,6 +154,9 @@ def main():
     R["B2+P"] = run(f"B2P_m{ms}", lambda li: AddProjection(TopMRenorm(ms)))
     R["B3"] = run(f"B3_m{ms}", lambda li: K2Fix(ms, k2))
     R["B3+P"] = run(f"B3P_m{ms}", lambda li: AddProjection(K2Fix(ms, k2)))
+    if args.model in (cfg["downstream"].get("b1_at_mstar_models") or []):
+        # B1 = the k2 = N reading of the k2 fix for routers without renormalisation (decision 2026-11-15)
+        R["B1"] = run(f"B1_m{ms}", lambda li: TopMKeep(ms))
     R["ours-fixed"] = run(f"ours_fixed_m{ms}", lambda li: Projection("ols", "ls", gram, m=ms))
     tgt = str(float(ms)) if ms >= 2 else "1.5"
     tau = taus[tgt]["tau"]
@@ -165,6 +168,8 @@ def main():
     rec_ = recovery(acc("ours-fixed"), B2["per_item"], acc("B0"), **_bs(pre))
     vs_b3 = paired_bootstrap(acc("ours-fixed"), acc("B3"), **_bs(pre))
     secondary = {t: recovery(acc(t), B2["per_item"], acc("B0"), **_bs(pre)) for t in ("B2+P", "B3+P")}
+    if "B1" in R:
+        secondary["ours_minus_B1"] = paired_bootstrap(acc("ours-fixed"), acc("B1"), **_bs(pre))
     if ms == 1:
         secondary["ours-adaptive_vs_B2_m2"] = paired_bootstrap(acc("ours-adaptive"), R["B2_m2"]["per_item"], **_bs(pre))
     ppl = {}

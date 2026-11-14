@@ -35,4 +35,5 @@ downstream:
   max_new_tokens: 512
   batch_size: 16
   ppl_tokens: 50000
-  b3_k2: null          # null = k (the trained value); see docs/related_work_notes.md
+  b3_k2: null          # null = k: B3 of record is the literal k2 = k (Dawar, 15 Nov 2026)
+  b1_at_mstar_models: [olmoe_1b_7b]   # also report B1 (= the k2 = N reading) at m* on OLMoE (Dawar, 15 Nov 2026)
