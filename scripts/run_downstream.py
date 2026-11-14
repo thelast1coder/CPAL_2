@@ -91,6 +91,8 @@ def ppl_tokens(args, cfg, tok):
 def main():
     p = base_parser(__doc__)
     p.add_argument("--skip-ppl", action="store_true")
+    p.add_argument("--native-only", action="store_true",
+                   help="K0.6: run B0 (native accuracy) only and write k0_native.json; the full run reuses B0")
     args = p.parse_args()
     args.target = "task"
     cfg, log = setup(args, "run_downstream")
@@ -98,6 +100,18 @@ def main():
     k3dir = P["res"] / "k3"
     k3dir.mkdir(exist_ok=True)
     pre = load_yaml(REPO_ROOT / "configs" / "prereg_kill_test.yaml")["k3"]
+    if args.native_only:
+        rec = run_record(dict(downstream=cfg["downstream"], step="K0.6 native accuracy"), args.seed)
+        model, tok = load_model(concrete_model(args, cfg, "task"), args)
+        h = patch_model(model, get_adapter(model))
+        task = Task(args, cfg, model, tok, h, log)
+        f = k3dir / "B0.json"
+        r = read_json(f) if (f.exists() and not args.force) else task.run("B0", k3dir)
+        write_json(f, r)
+        log.info(f"[K0.6] native accuracy on {r['task']}: {r['accuracy']:.4f} (n={r['n']})")
+        write_json(P["res"] / "k0_native.json", dict(task=r["task"], accuracy=r["accuracy"], n=r["n"],
+                                                     model=concrete_model(args, cfg, "task"), run=rec.finish()))
+        return
     primary = read_json(P["res"] / "layer_eval.json")["primary"]
     taus = read_json(P["res"] / "tau_task.json")["taus"]
     rec = run_record(dict(downstream=cfg["downstream"], primary=primary, prereg_k3=pre), args.seed)
