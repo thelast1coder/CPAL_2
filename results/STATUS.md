@@ -1,8 +1,13 @@
 # STATUS
 
 ## Now
-P0 done. P1 paused: the first VM (RTX 5090, 32 GB) is too small for Qwen3-30B-A3B. Dawar chose (11 Nov
-2026) to move the whole P1 run to an 80 GB+ GPU. The 5090 is used only for environment setup and CPU tests.
+P1 running on VM 2 (Jarvis Labs, RTX PRO 6000 Blackwell 96 GB), started 14 Nov 2026 14:37 UTC:
+`scripts/p1_start.sh --qwen bf16` (setup, downloads, data, K0 for both models, then stop for the K0 report).
+
+## Decision D7 (fixed 14 Nov 2026, before K0)
+- Qwen3-30B-A3B runs in **bf16** for every number. Reason: the prereg rule is bf16 if at least 70 GB of GPU
+  memory can be reserved; VM 2 has 96 GB (97,887 MiB) with 0 MiB in use and no other processes at start.
+- Memory caps: OLMoE 40 GB, Qwen3 75 GB; every GPU step waits for free memory first.
 
 ## Prereg
 - PREREG_KILL_TEST.md + configs/prereg_kill_test.yaml commit: `1d7c06c62b7336aeed70ac4285b70908c6151b7a`
@@ -33,13 +38,17 @@ P0 done. P1 paused: the first VM (RTX 5090, 32 GB) is too small for Qwen3-30B-A3
   k2 = N (= keep gates). Default in the code is the literal k2 = k. Which do you want before K3?
 
 ## Blockers
-- An 80 GB+ GPU (H100 class) for P1. Qwen3-30B-A3B needs about 61 GB in bf16 and about 31 GB in FP8
-  for the weights alone, so it does not fit on the 32 GB RTX 5090.
+- None.
 
 ## VM notes
 - VM 1 (11 Nov 2026): vast.ai instance 60187060, 1x RTX 5090 32 GB, 30 GB RAM, 8 CPUs, 350 GB disk,
   driver 580.178.04 (CUDA 13.0). No persistent volume: everything on it is lost on recycle or destroy.
   Repo cloned to /workspace/MoE_CPAL from a git bundle. Shared with other projects.
+- VM 2 (14 Nov 2026): Jarvis Labs VM (ubuntu@151.185.34.98), 1x RTX PRO 6000 Blackwell Server Edition
+  96 GB, driver 595.91.07 (CUDA 13.2), 157 GB RAM, 28 CPUs, 242 GB disk (228 GB free), Ubuntu 24.04.
+  Repo at ~/MoE_CPAL (cloned from GitHub at c2fb245), HF_HOME=~/hf_home. Installed python3.12-venv (apt)
+  and uv 0.13.8. Env: torch 2.15.0+cu132, transformers 5.22.2. CPU tests on the VM: 38 passed (59.5 s).
+  No HF token (all models and datasets public).
 - Repository: https://github.com/thelast1coder/CPAL_2 (origin; P0 pushed at 62dfda6).
 
 ## Deviations log
@@ -51,3 +60,4 @@ P0 done. P1 paused: the first VM (RTX 5090, 32 GB) is too small for Qwen3-30B-A3
   Environment setup and CPU tests run on VM 1 only; no model downloads there.
 - 2026-11-11: Pre-VM preparation: IDs checked and revisions pinned, GPU queue, `--stop-after k0`,
   `p1_start.sh`, `pull_results.sh`. pytest: 38 passed (CPU, 4 min 42 s). Tiny run with `--stop-after k0`: all K0 checks pass.
+- 2026-11-14: VM 2 (RTX PRO 6000 Blackwell 96 GB, Jarvis Labs). D7 = bf16. P1 started to K0.
